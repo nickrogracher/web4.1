@@ -29,9 +29,8 @@ public class DailyReportDao {
     }
 
     public DailyReport lastReport(){
-        Query query = session.createQuery("from DailyReport by id DESC");
-        query.setMaxResults(1);
-        return (DailyReport) query.uniqueResult();
+        List<DailyReport> list = session.createQuery("FROM DailyReport").list();
+        return list.get(list.size() - 1);
     }
 
     public void deleteReports() {

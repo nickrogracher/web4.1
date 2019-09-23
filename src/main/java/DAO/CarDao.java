@@ -23,7 +23,7 @@ public class CarDao {
     }
 
     public void addCar(Car car){
-        session.save(new Car(car.getBrand(), car.getBrand(), car.getLicensePlate(), car.getPrice()));
+        session.save(new Car(car.getBrand(), car.getModel(), car.getLicensePlate(), car.getPrice()));
     }
 
     public int checkMountOfBrand(String brand){

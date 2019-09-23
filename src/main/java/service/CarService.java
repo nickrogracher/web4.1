@@ -53,11 +53,11 @@ public class CarService {
         List<Car> cars = new ArrayList<>();
         try{
             Session session = sessionFactory.openSession();
-            //Transaction transaction = session.beginTransaction();
+            Transaction transaction = session.beginTransaction();
             CarDao carDao = new CarDao(session);
             cars =  carDao.getAllCars();
-            //transaction.commit();
-            session.clear();
+            transaction.commit();
+            session.close();
             return cars;
         }
         catch (HibernateException e){
