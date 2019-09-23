@@ -12,6 +12,8 @@ import service.DailyReportService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hibernate.criterion.Restrictions.like;
+
 public class CarDao {
 
     private Session session;
@@ -25,7 +27,7 @@ public class CarDao {
     }
 
     public int checkMountOfBrand(String brand){
-        List list = session.createCriteria(Car.class).add(Restrictions.like("brand", brand)).list();
+        List list = session.createCriteria(Car.class).add(like("brand", brand)).list();
         return list.size();
     }
 
@@ -35,9 +37,9 @@ public class CarDao {
     }
 
     public void sellCar(String brand, String model, String licensePlate){
-        List list = session.createCriteria(Car.class).add(Restrictions.like("brand", brand))
-                .add(Restrictions.like("model", model))
-                .add(Restrictions.like("licensePlate", licensePlate)).list();
+        List list = session.createCriteria(Car.class).add(like("brand", brand))
+                .add(like("model", model))
+                .add(like("licensePlate", licensePlate)).list();
         Car car = (Car)list.get(0);
         DailyReportHandler.getInstance().addToReportHandler(car.getPrice());
         session.delete(list.get(0));

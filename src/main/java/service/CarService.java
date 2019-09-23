@@ -32,7 +32,7 @@ public class CarService {
     public boolean addCar(Car car) {
         try {
             Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            session.beginTransaction();
             CarDao carDao = new CarDao(session);
             if (carDao.checkMountOfBrand(car.getBrand()) > 10) {
                 throw new HibernateException("Already 10");
@@ -40,7 +40,7 @@ public class CarService {
             else {
                 carDao.addCar(car);
             }
-            transaction.commit();
+            session.getTransaction().commit();
             session.clear();
             return true;
         }
