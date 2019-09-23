@@ -1,5 +1,6 @@
 package servlet;
 
+import service.CarService;
 import service.DailyReportService;
 
 import javax.servlet.ServletException;
@@ -21,6 +22,7 @@ public class DailyReportServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        CarService.getInstance().deleteAllCars();
+        DailyReportService.getInstance().deleteAllReports();
     }
 }

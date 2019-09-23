@@ -2,6 +2,7 @@ package service;
 
 import DAO.CarDao;
 import model.Car;
+import model.DailyReportHandler;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -73,6 +74,20 @@ public class CarService {
             transaction.commit();
             session.clear();
             return true;
+        }
+        catch (HibernateException e){
+            throw new HibernateException(e);
+        }
+    }
+
+    public void deleteAllCars() {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            CarDao carDao = new CarDao(session);
+            carDao.deleteReports();
+            transaction.commit();
+            session.clear();
         }
         catch (HibernateException e){
             throw new HibernateException(e);

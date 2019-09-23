@@ -1,7 +1,9 @@
 package DAO;
 
 import model.Car;
+import model.DailyReportHandler;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
@@ -37,8 +39,12 @@ public class CarDao {
                 .add(Restrictions.like("model", model))
                 .add(Restrictions.like("licensePlate", licensePlate)).list();
         Car car = (Car)list.get(0);
-        DailyReportService.getInstance().addSellToReport(car.getPrice());
+        DailyReportHandler.getInstance().addToReportHandler(car.getPrice());
         session.delete(list.get(0));
     }
 
+    public void deleteReports() {
+        Query query =  session.createQuery("delete from Car");
+        query.executeUpdate();
+    }
 }

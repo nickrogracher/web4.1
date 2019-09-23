@@ -2,6 +2,7 @@ package service;
 
 import DAO.DailyReportDao;
 import model.DailyReport;
+import model.DailyReportHandler;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,18 +34,44 @@ public class DailyReportService {
 
 
     public DailyReport getLastReport() {
-        return null;
+        try {
+            Session session = sessionFactory.openSession();
+            DailyReportDao dailyReportDao = new DailyReportDao(session);
+            DailyReport dailyReport = dailyReportDao.lastReport();
+            session.clear();
+            return dailyReport;
+        }
+        catch (HibernateException e){
+            throw new HibernateException(e);
+        }
     }
 
-    public boolean addSellToReport(long price){
+
+
+    public boolean makeNewDayReport(){
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             DailyReportDao dailyReportDao = new DailyReportDao(session);
-            dailyReportDao.addSellToReport(price);
+            dailyReportDao.newDayReport();
+            DailyReportHandler.getInstance().refreshReportHandler();
             transaction.commit();
             session.clear();
             return true;
+        }
+        catch (HibernateException e){
+            throw new HibernateException(e);
+        }
+    }
+
+    public void deleteAllReports() {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            DailyReportDao dailyReportDao = new DailyReportDao(session);
+            dailyReportDao.deleteReports();
+            transaction.commit();
+            session.clear();
         }
         catch (HibernateException e){
             throw new HibernateException(e);
