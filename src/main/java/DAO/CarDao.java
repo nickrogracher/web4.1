@@ -31,7 +31,7 @@ public class CarDao {
     }
 
     public void sellCar(String brand, String model, String licensePlate){
-        Query query = session.createQuery("FROM Car where brand = :brand, model = :model, licensePlate = :licensePlate");
+        Query query = session.createQuery("FROM Car where brand = :brand and model = :model and licensePlate = :licensePlate");
         query.setParameter("brand", brand);
         query.setParameter("model", model);
         query.setParameter("licensePlate", licensePlate);
