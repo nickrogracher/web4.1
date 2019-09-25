@@ -1,4 +1,3 @@
-import model.Car;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -7,8 +6,6 @@ import servlet.DailyReportServlet;
 import servlet.NewDayServlet;
 import servlet.ProducerServlet;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 

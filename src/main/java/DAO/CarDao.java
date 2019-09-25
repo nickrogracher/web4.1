@@ -2,17 +2,9 @@ package DAO;
 
 import model.Car;
 import model.DailyReportHandler;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Restrictions;
-import service.DailyReportService;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.hibernate.criterion.Restrictions.like;
 
 public class CarDao {
 
@@ -27,19 +19,23 @@ public class CarDao {
     }
 
     public int checkMountOfBrand(String brand){
-        List list = session.createCriteria(Car.class).add(like("brand", brand)).list();
+        Query query = session.createQuery("FROM Car where brand = :brand");
+        query.setParameter("brand", brand);
+        List list = query.list();
         return list.size();
     }
 
     public List<Car> getAllCars(){
-        List list = session.createCriteria(Car.class).list();
-        return list;
+        Query query = session.createQuery("FROM Car");
+        return (List<Car>) query.list();
     }
 
     public void sellCar(String brand, String model, String licensePlate){
-        List list = session.createCriteria(Car.class).add(like("brand", brand))
-                .add(like("model", model))
-                .add(like("licensePlate", licensePlate)).list();
+        Query query = session.createQuery("FROM Car where brand = :brand, model = :model, licensePlate = :licensePlate");
+        query.setParameter("brand", brand);
+        query.setParameter("model", model);
+        query.setParameter("licensePlate", licensePlate);
+        List list = query.list();
         Car car = (Car)list.get(0);
         DailyReportHandler.getInstance().addToReportHandler(car.getPrice());
         session.delete(list.get(0));
